@@ -22,15 +22,6 @@ def read_root():
     """Useless Hello World"""
     return {"Hello": "World"}
 
-@app.get("/chucknorris")
-def get_chuck_norris_joke():
-    """
-    Get random Chuck Norris joke from https://api.chucknorris.io/
-    """
-    resp = http.request('GET', "https://api.chucknorris.io/jokes/random")
-    data_dict = json.loads(resp.data.decode('utf-8'))
-    return {"result": data_dict['value']}
-
 @app.get("/yomomma")
 def read_item(index: Optional[int] = None):
     """Get yo momma insulting joke"""
