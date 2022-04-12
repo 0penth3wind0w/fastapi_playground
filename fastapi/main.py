@@ -4,6 +4,7 @@ import json
 import uuid
 
 sys.path.insert(1, './packages/')
+
 import urllib3
 from fastapi import FastAPI, HTTPException
 from mangum import Mangum
@@ -40,26 +41,26 @@ def post_something(something: Something):
     """Create something"""
     if something.uid == None:
         something.uid = str(uuid.uuid4())
-    return {'result': 'success'} | dict(something)
+    return {'result': 'success', 'method': 'POST'} | dict(something)
 
 @app.put("/something/{uid}")
 def put_something(uid: str, somecontent: SomeContent):
     """Update something that received"""
-    result = {'uid': uid}
-    if somecontent.some_number != None:
-        result = result | {'some_number': somecontent.some_number}
-    if somecontent.some_string != None:
-        result = result | {'some_string': somecontent.some_string}
-    return {'result': 'success'} | result
+    return {'result': 'success', 'method': 'PUT', 'something': uid} | dict(somecontent)
 
 @app.delete("/something/{uid}")
 def delete_something(uid: str):
     """Delete something"""
-    return {'result': 'success', 'uid': uid}
+    return {'result': 'success', 'uid': uid, 'method': 'DELETE'}
 
-@app.patch("/something/{some_text}")
-def patch_something(some_text: str):
+@app.patch("/something/{uid}")
+def patch_something(uid: str, somecontent: SomeContent):
     """Patch something that received"""
-    return {'result': 'success', 'something': some_text}
+    result = {}
+    if somecontent.some_number != None:
+        result = result | {'some_number': somecontent.some_number}
+    if somecontent.some_string != None:
+        result = result | {'some_string': somecontent.some_string}
+    return {'result': 'success', 'method': 'PATCH', 'something': uid} | result
 
 handler = Mangum(app)
