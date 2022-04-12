@@ -1,3 +1,11 @@
+terraform {
+  required_providers {
+    aws = {
+      version = "4.8.0"
+    }
+  }
+}
+
 data "archive_file" "studygroup_source" {
   type        = "zip"
   source_dir  = "${path.module}/fastapi"
@@ -5,6 +13,7 @@ data "archive_file" "studygroup_source" {
 }
 
 # Lambda
+
 resource "aws_lambda_function" "studygroup_lambda" {
   function_name    = "${var.project}-${var.environment}-studygroup"
   handler          = "main.handler"
