@@ -36,9 +36,26 @@ resource "aws_iam_role" "studygroup_lambda_role" {
       Principal = {
         Service = "lambda.amazonaws.com"
       }
-      }
-    ]
+    }]
   })
+
+  # inline_policy {
+  #   name = "${var.project}-${var.environment}-studygroup-lambda-policy"
+  #   policy = jsonencode({
+  #     Version = "2012-10-17"
+  #     Statement = [
+  #       {
+  #         "Effect": "Allow",
+  #         "Action": [
+  #           "logs:CreateLogGroup",
+  #           "logs:CreateLogStream",
+  #           "logs:PutLogEvents"
+  #         ],
+  #         "Resource": "*"
+  #       }
+  #     ]
+  #   })
+  # }
 }
 
 resource "aws_iam_role_policy_attachment" "studygroup_lambda_policy" {
